@@ -57,7 +57,7 @@ def index():
     """Endpoint cek status server API (Health Check)."""
     return jsonify({
         "status": "online",
-        "service": "CareerPath ML - Rekomendasi Bidang Karir Mahasiswa API",
+        "service": "CareerPath - Rekomendasi Bidang Karir Mahasiswa API",
         "model_loaded": career_model is not None,
         "model_file": MODEL_FILENAME,
         "expected_features": FEATURE_COLUMNS
