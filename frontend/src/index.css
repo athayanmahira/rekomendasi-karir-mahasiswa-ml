@@ -1,0 +1,58 @@
+:root {
+  --ink: #161a45;
+  --ink2: #454b7a;
+  --mute: #7c83ad;
+  --blue: #2b4bd9;
+  --blue2: #3d63ff;
+  --blue-d: #1a2fa0;
+  --sky: #e9eeff;
+  --sheet: #ffffff;
+  --sun: #ffc23d;
+  --coral: #ff6b57;
+  --purple: #7c5cff;
+  --mint: #19c79f;
+  --line: #e4e8fb;
+  --fd: 'Fredoka', system-ui, sans-serif;
+  --fb: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--fb);
+  color: var(--ink);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  background:
+    radial-gradient(circle at 12% 8%, #c6d4ff 0, transparent 42%),
+    radial-gradient(circle at 92% 18%, #ffd9e4 0, transparent 38%),
+    radial-gradient(circle at 70% 96%, #d3f4e8 0, transparent 40%),
+    #e8eeff;
+  background-attachment: fixed;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible {
+  outline: 3px solid #ffc23d;
+  outline-offset: 3px;
+}
+
+svg {
+  display: block;
+}
