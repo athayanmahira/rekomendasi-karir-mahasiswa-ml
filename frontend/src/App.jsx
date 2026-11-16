@@ -106,42 +106,192 @@ QUESTION_GROUPS.forEach((g, gi) =>
 );
 const TOTAL = FLOW.length;
 
-/* Bidang karir */
-const CAREER_ORDER = ['ds', 'se', 'ux', 'cy', 'io', 'en'];
+/* 11 Bidang karir */
+const CAREER_ORDER = ['ds', 'ai', 'da', 'cy', 'io', 'em', 'ch', 'se', 'en', 'au', 'ux'];
 const CAREERS = {
   ds: {
-    name: 'Data Science & Artificial Intelligence',
-    short: 'Data Science & AI',
+    name: 'Data Scientist',
+    short: 'Data Scientist',
     color: '#8b6bff',
     p1: '#b6a2ff',
     p2: '#6d4df2',
-    tagline: 'Pengolahan data berskala besar, pemodelan prediktif, dan pengembangan sistem cerdas berbasis pembelajaran mesin.',
-    desc: 'Bidang karir ini berfokus pada ekstraksi wawasan strategis dari sekumpulan data melalui analisis statistik, visualisasi informasi, serta perancangan program yang mampu belajar dari pola data untuk membantu pengambilan keputusan secara akurat.',
+    tagline: 'Menyuka data, mencari pola, berpikir analitis, dan memahami informasi dari angka.',
+    desc: 'Data Scientist menggali data dalam jumlah besar untuk menemukan pola, membangun model statistik, dan mengubah temuan menjadi wawasan yang membantu pengambilan keputusan.',
     comps: [
-      'Eksplorasi data, analisis kuantitatif, dan pengenalan pola statistik',
-      'Perancangan dan evaluasi algoritma pembelajaran mesin (Machine Learning)',
-      'Visualisasi data dan penyampaian temuan teknis secara terstruktur',
-      'Pemecahan masalah logis dan eksperimen peningkatan akurasi program'
+      'Statistik, probabilitas, dan analisis kuantitatif',
+      'Pemrograman analitis (Python, R, SQL)',
+      'Eksplorasi data dan pengenalan pola',
+      'Menyampaikan temuan data secara jelas kepada pemangku kepentingan'
     ],
     advice: [
-      'Perdalam struktur data, probabilitas, dan pemrograman analitis (seperti Python dan SQL).',
-      'Bangun portofolio proyek dataset nyata, mulai dari eksplorasi hingga evaluasi model.',
-      'Asah komunikasi visual agar hasil teknis mudah dipahami pemangku kepentingan non-teknis.'
+      'Perdalam statistik, probabilitas, dan Python atau SQL.',
+      'Kerjakan proyek dataset nyata dari eksplorasi sampai evaluasi.',
+      'Latih menjelaskan hasil analisis dengan bahasa sederhana.'
     ],
     roles: [
-      ['Data Analyst / Business Intelligence', 'Mengolah data operasional dan menyajikan visualisasi interaktif untuk menjawab permasalahan organisasi.'],
-      ['Machine Learning Engineer', 'Membangun, melatih, dan mengoptimalkan model prediktif agar dapat berjalan pada sistem produksi.'],
-      ['Data Scientist', 'Merumuskan hipotesis analitis, melakukan eksperimen pemodelan, dan mengekstrak pola dari data kompleks.']
+      ['Data Scientist', 'Menganalisis data kompleks dan membangun model untuk menjawab masalah organisasi.'],
+      ['Research Analyst', 'Meneliti tren dan pola dari data untuk mendukung strategi.'],
+      ['Quantitative Analyst', 'Menggunakan model matematis dan statistik untuk menilai peluang dan risiko.']
+    ]
+  },
+  ai: {
+    name: 'AI / Machine Learning Engineer',
+    short: 'AI / ML Engineer',
+    color: '#e056c8',
+    p1: '#f5a3e6',
+    p2: '#b92fa0',
+    tagline: 'Membuat program yang belajar dari data, mencoba pendekatan berbeda, dan memecahkan masalah.',
+    desc: 'AI/Machine Learning Engineer merancang, melatih, dan menyempurnakan model yang dapat belajar dari contoh data, lalu memasangnya agar bisa dipakai di aplikasi nyata.',
+    comps: [
+      'Dasar machine learning dan deep learning',
+      'Pemrograman Python dan framework seperti PyTorch atau TensorFlow',
+      'Menyiapkan data dan mengevaluasi model',
+      'Bereksperimen dengan banyak pendekatan sampai hasil lebih tepat'
+    ],
+    advice: [
+      'Kuasai Python, aljabar linear, dan dasar machine learning.',
+      'Ulangi eksperimen model dan catat hasil tiap percobaan.',
+      'Pelajari cara men-deploy model menjadi layanan sederhana.'
+    ],
+    roles: [
+      ['Machine Learning Engineer', 'Melatih dan mengoptimalkan model prediktif untuk produk digital.'],
+      ['AI Engineer', 'Mengintegrasikan model cerdas ke dalam aplikasi dan layanan.'],
+      ['NLP / Computer Vision Engineer', 'Mengembangkan sistem yang memahami teks atau gambar.']
+    ]
+  },
+  da: {
+    name: 'Data Analyst',
+    short: 'Data Analyst',
+    color: '#84cc16',
+    p1: '#d4f08a',
+    p2: '#5fa00b',
+    tagline: 'Menyukai pengolahan data, pencarian informasi, dan penggunaan hasil analisis untuk menjawab pertanyaan.',
+    desc: 'Data Analyst mengolah dan membersihkan data, mencari informasi penting di dalamnya, lalu menyajikannya dalam grafik dan laporan agar mudah dipahami dan dipakai mengambil keputusan.',
+    comps: [
+      'SQL, spreadsheet, dan pengolahan data',
+      'Visualisasi data dan dashboard',
+      'Membersihkan dan menyusun data',
+      'Menjelaskan hasil analisis kepada orang lain'
+    ],
+    advice: [
+      'Biasakan SQL dan alat dashboard seperti Power BI atau Looker Studio.',
+      'Buat portofolio dashboard dari dataset publik.',
+      'Latih bercerita dengan data, bukan hanya menampilkan angka.'
+    ],
+    roles: [
+      ['Data Analyst', 'Mengolah data dan menjawab pertanyaan bisnis lewat analisis.'],
+      ['Business Intelligence Analyst', 'Membangun dashboard yang membantu pimpinan memantau kinerja.'],
+      ['Reporting Specialist', 'Menyusun laporan berkala yang akurat dan mudah dibaca.']
+    ]
+  },
+  cy: {
+    name: 'Cybersecurity Analyst',
+    short: 'Cybersecurity',
+    color: '#5b54e8',
+    p1: '#9d99ff',
+    p2: '#3b34b8',
+    tagline: 'Menemukan kelemahan sistem dan melindungi informasi dari ancaman digital.',
+    desc: 'Cybersecurity Analyst memantau dan menguji sistem untuk menemukan kelemahan, lalu memperkuat perlindungan akun, data, dan jaringan dari serangan digital.',
+    comps: [
+      'Dasar jaringan: TCP/IP, routing, dan firewall',
+      'Identifikasi kerentanan dan penetration testing secara etis',
+      'Monitoring, analisis log, dan respons insiden',
+      'Pemahaman enkripsi dan manajemen hak akses'
+    ],
+    advice: [
+      'Pelajari dasar jaringan dan Linux, lalu berlatih di lab atau CTF yang legal.',
+      'Pertimbangkan sertifikasi dasar seperti CompTIA Security+ atau CCNA.',
+      'Biasakan menulis laporan temuan yang jelas dan rapi.'
+    ],
+    roles: [
+      ['Security Analyst', 'Memantau ancaman, menganalisis log, dan menindaklanjuti insiden keamanan.'],
+      ['Penetration Tester', 'Menguji sistem secara etis untuk menemukan celah sebelum dimanfaatkan penyerang.'],
+      ['Network Security Engineer', 'Mengamankan dan menjaga stabilitas infrastruktur jaringan.']
+    ]
+  },
+  io: {
+    name: 'IoT Developer / Engineer',
+    short: 'IoT Developer',
+    color: '#2fd39a',
+    p1: '#9af0cb',
+    p2: '#10a37f',
+    tagline: 'Tertarik pada sensor, perangkat elektronik, dan menggabungkan komponen dengan program.',
+    desc: 'IoT Developer/Engineer menghubungkan sensor dan perangkat elektronik ke jaringan, lalu menulis program agar data dapat dibaca, dikirim, dan dimanfaatkan.',
+    comps: [
+      'Pemrograman mikrokontroler dan perangkat berbasis sensor',
+      'Dasar rangkaian elektronik',
+      'Protokol komunikasi seperti MQTT, I2C, dan SPI',
+      'Mengirim data perangkat ke cloud atau dashboard'
+    ],
+    advice: [
+      'Mulai proyek kecil dengan Arduino atau ESP32, misalnya monitor suhu ruangan.',
+      'Pelajari cara mengirim data sensor ke cloud atau dashboard.',
+      'Dokumentasikan skema rangkaian dan kode supaya proyekmu bisa ditiru.'
+    ],
+    roles: [
+      ['IoT Developer', 'Menghubungkan sensor dan perangkat ke jaringan serta platform data.'],
+      ['IoT Solutions Engineer', 'Merancang solusi perangkat terhubung untuk kebutuhan nyata.'],
+      ['Smart Device Engineer', 'Mengembangkan perangkat pintar untuk rumah, industri, atau pertanian.']
+    ]
+  },
+  em: {
+    name: 'Embedded Systems Engineer',
+    short: 'Embedded Systems',
+    color: '#14b8a6',
+    p1: '#8ff0e1',
+    p2: '#0b8f82',
+    tagline: 'Tertarik memahami komponen elektronik dan membuat program yang mengendalikan fungsi perangkat elektronik.',
+    desc: 'Embedded Systems Engineer menulis program yang berjalan langsung di dalam perangkat elektronik dan memastikan perangkat keras serta perangkat lunaknya bekerja sama dengan andal.',
+    comps: [
+      'Pemrograman C/C++ untuk mikrokontroler',
+      'Dasar rangkaian dan komponen elektronik',
+      'Debugging perangkat keras dan perangkat lunak',
+      'Ketelitian dalam membaca datasheet'
+    ],
+    advice: [
+      'Perdalam C/C++ dan arsitektur mikrokontroler.',
+      'Bangun proyek yang mengendalikan motor, sensor, atau layar.',
+      'Biasakan membaca datasheet dan skema rangkaian.'
+    ],
+    roles: [
+      ['Embedded Engineer', 'Menulis program yang berjalan langsung di dalam perangkat elektronik.'],
+      ['Firmware Engineer', 'Mengembangkan dan memperbarui perangkat lunak tingkat rendah pada perangkat.'],
+      ['Hardware Test Engineer', 'Menguji agar perangkat bekerja sesuai fungsinya.']
+    ]
+  },
+  ch: {
+    name: 'Chip Design Engineer',
+    short: 'Chip Design',
+    color: '#64748b',
+    p1: '#aab6c8',
+    p2: '#3a4658',
+    tagline: 'Tertarik memahami komponen elektronik, rangkaian digital, dan cara kerja chip.',
+    desc: 'Chip Design Engineer merancang rangkaian digital yang menjadi otak perangkat, mulai dari logika dasar, simulasi, hingga verifikasi agar chip bekerja benar.',
+    comps: [
+      'Logika digital dan arsitektur komputer',
+      'Bahasa deskripsi perangkat keras seperti Verilog atau VHDL',
+      'Simulasi dan verifikasi rancangan',
+      'Ketelitian tinggi pada detail rangkaian'
+    ],
+    advice: [
+      'Kuasai logika digital dan arsitektur komputer.',
+      'Coba Verilog atau VHDL dengan simulator dan FPGA sederhana.',
+      'Latih ketelitian lewat proyek verifikasi kecil.'
+    ],
+    roles: [
+      ['Digital Design Engineer', 'Merancang rangkaian digital dengan bahasa deskripsi perangkat keras.'],
+      ['Verification Engineer', 'Menguji rancangan chip lewat simulasi sebelum diproduksi.'],
+      ['FPGA Engineer', 'Mengimplementasikan rancangan pada perangkat FPGA.']
     ]
   },
   se: {
-    name: 'Software Engineering & Application Development',
-    short: 'Software Engineering',
+    name: 'Application Developer',
+    short: 'App Developer',
     color: '#38bdf8',
     p1: '#9be0ff',
     p2: '#2f8fe8',
-    tagline: 'Merancang, membangun, dan merawat aplikasi yang dipakai banyak orang.',
-    desc: 'Bidang ini berfokus pada pengembangan perangkat lunak mulai dari analisis kebutuhan, penulisan kode, pengujian, hingga pemeliharaan agar aplikasi berjalan andal dan mudah dikembangkan.',
+    tagline: 'Tertarik membuat aplikasi, menulis program, dan memperbaiki kesalahan.',
+    desc: 'Application Developer membuat aplikasi mulai dari analisis kebutuhan, penulisan kode, pengujian, hingga pemeliharaan agar aplikasi berjalan andal dan mudah dikembangkan.',
     comps: [
       'Pemrograman serta struktur data dan algoritma',
       'Perancangan arsitektur aplikasi dan basis data',
@@ -151,112 +301,87 @@ const CAREERS = {
     advice: [
       'Dalami satu bahasa pemrograman sampai nyaman, lalu pelajari framework web atau mobile.',
       'Bangun dan publikasikan proyek aplikasi lengkap di GitHub beserta dokumentasinya.',
-      'Ikut kerja tim atau open source agar terbiasa dengan code review dan alur kolaborasi.'
+      'Ikut kerja tim atau open source untuk melatih kolaborasi.'
     ],
     roles: [
       ['Frontend / Backend Developer', 'Membangun tampilan dan logika sisi server untuk aplikasi web yang cepat dan stabil.'],
-      ['Mobile App Developer', 'Mengembangkan aplikasi Android atau iOS yang nyaman dipakai sehari-hari.'],
-      ['Software QA Engineer', 'Merancang pengujian otomatis dan memastikan kualitas perangkat lunak sebelum dirilis.']
+      ['Mobile App Developer', 'Mengembangkan aplikasi Android atau iOS yang nyaman dipakai.'],
+      ['Software Tester / QA', 'Menguji aplikasi agar bebas kesalahan sebelum dirilis.']
+    ]
+  },
+  en: {
+    name: 'ERP Analyst / Consultant',
+    short: 'ERP Analyst',
+    color: '#ffb524',
+    p1: '#ffdc82',
+    p2: '#ff9a1f',
+    tagline: 'Tertarik memahami kebutuhan bisnis dan mencari cara agar sistem membantu pekerjaan perusahaan.',
+    desc: 'ERP Analyst/Consultant memahami proses kerja perusahaan, lalu menyesuaikan dan mengimplementasikan sistem terintegrasi agar pekerjaan lebih efisien.',
+    comps: [
+      'Analisis proses bisnis dan kebutuhan sistem',
+      'Pemahaman ERP dan integrasi antar sistem',
+      'Komunikasi dan pengelolaan pemangku kepentingan',
+      'Mengatur tugas dan jadwal implementasi'
+    ],
+    advice: [
+      'Pelajari pemodelan proses bisnis (BPMN) dan dasar-dasar ERP.',
+      'Coba studi kasus implementasi sistem seperti Odoo atau SAP.',
+      'Latih presentasi dan penulisan dokumen kebutuhan yang rapi.'
+    ],
+    roles: [
+      ['ERP Analyst', 'Menerjemahkan kebutuhan bisnis menjadi konfigurasi sistem ERP.'],
+      ['Business / System Analyst', 'Menyusun spesifikasi sistem yang jelas bagi tim pengembang.'],
+      ['IT Consultant', 'Mendampingi organisasi memilih dan menerapkan solusi teknologi.']
+    ]
+  },
+  au: {
+    name: 'IT Auditor',
+    short: 'IT Auditor',
+    color: '#ef4444',
+    p1: '#fca5a5',
+    p2: '#b91c1c',
+    tagline: 'Teliti, tertarik pada keamanan dan risiko, serta memeriksa apakah sistem digunakan sesuai aturan.',
+    desc: 'IT Auditor memeriksa apakah sistem komputer dan pengelolaan data sudah aman, andal, dan sesuai aturan, lalu menyusun temuan serta rekomendasi perbaikan.',
+    comps: [
+      'Kerangka tata kelola dan audit TI (COBIT, ISO 27001)',
+      'Penilaian risiko dan pengendalian internal',
+      'Ketelitian dalam memeriksa bukti dan dokumen',
+      'Menulis laporan temuan yang jelas'
+    ],
+    advice: [
+      'Kenali COBIT dan ISO 27001 lewat studi kasus audit sederhana.',
+      'Latih ketelitian memeriksa dokumen dan bukti.',
+      'Asah penulisan laporan temuan dan rekomendasi.'
+    ],
+    roles: [
+      ['IT Auditor', 'Menilai apakah pengelolaan sistem dan data sudah aman serta sesuai aturan.'],
+      ['Risk & Compliance Analyst', 'Mengidentifikasi risiko teknologi dan memastikan kepatuhan.'],
+      ['IT Governance Specialist', 'Menyelaraskan penggunaan teknologi dengan kebijakan organisasi.']
     ]
   },
   ux: {
-    name: 'UI/UX Design & Product Research',
-    short: 'UI/UX Design',
+    name: 'UI/UX Designer',
+    short: 'UI/UX Designer',
     color: '#ff7a59',
     p1: '#ffc0aa',
     p2: '#ff6b57',
-    tagline: 'Merancang pengalaman digital yang menarik, mudah dipakai, dan benar-benar dibutuhkan pengguna.',
-    desc: 'Bidang ini berfokus pada memahami kebutuhan pengguna, merancang alur dan tampilan, membuat prototipe, lalu menguji apakah rancangan tersebut mudah dipahami dan nyaman digunakan.',
+    tagline: 'Kreatif, tertarik memahami kebutuhan pengguna, merancang tampilan, dan menguji kemudahan penggunaan.',
+    desc: 'UI/UX Designer memahami kebutuhan pengguna, merancang alur dan tampilan, membuat prototipe, lalu menguji apakah rancangan mudah dipahami dan nyaman digunakan.',
     comps: [
       'Riset pengguna: wawancara, survei, dan usability testing',
       'Perancangan wireframe, prototipe, dan design system',
       'Penerapan visual, warna, dan tipografi yang konsisten',
-      'Komunikasi ide desain kepada developer dan pemangku kepentingan'
+      'Komunikasi ide desain kepada developer dan tim'
     ],
     advice: [
-      'Pelajari Figma dan prinsip dasar UX seperti hierarki visual, aksesibilitas, dan heuristik usability.',
-      'Susun studi kasus yang menunjukkan masalah, proses, dan hasil, bukan hanya tampilan akhir.',
-      'Uji rancanganmu ke 5 pengguna nyata dan catat temuannya untuk perbaikan.'
+      'Pelajari Figma dan prinsip dasar UX seperti hierarki visual dan aksesibilitas.',
+      'Susun studi kasus yang menunjukkan masalah, proses, dan hasil.',
+      'Uji desainmu ke beberapa orang dan catat masukannya.'
     ],
     roles: [
       ['UI Designer', 'Merancang antarmuka yang rapi, konsisten, dan enak dilihat di berbagai ukuran layar.'],
-      ['UX Researcher', 'Menggali kebutuhan dan perilaku pengguna lewat riset untuk mengarahkan keputusan produk.'],
-      ['Product Designer', 'Menghubungkan riset, desain, dan tujuan bisnis menjadi produk yang utuh.']
-    ]
-  },
-  cy: {
-    name: 'Cyber Security & Network Infrastructure',
-    short: 'Cyber & Network',
-    color: '#5b54e8',
-    p1: '#9d99ff',
-    p2: '#3b34b8',
-    tagline: 'Melindungi sistem, data, dan jaringan dari ancaman digital.',
-    desc: 'Bidang ini berfokus pada pengamanan sistem dan data, pengujian kelemahan secara etis, serta pengelolaan jaringan agar tetap aman, cepat, dan stabil.',
-    comps: [
-      'Dasar jaringan: TCP/IP, routing, dan firewall',
-      'Identifikasi kerentanan dan penetration testing secara etis',
-      'Monitoring, analisis log, dan respons insiden',
-      'Pemahaman enkripsi dan manajemen hak akses'
-    ],
-    advice: [
-      'Pelajari dasar jaringan dan Linux, lalu berlatih di lab atau CTF yang legal.',
-      'Pertimbangkan sertifikasi dasar (misalnya CompTIA Security+ atau CCNA) sebagai peta belajar.',
-      'Biasakan menulis laporan temuan yang jelas dan dapat ditindaklanjuti.'
-    ],
-    roles: [
-      ['Security Analyst', 'Memantau ancaman, menganalisis log, dan menindaklanjuti insiden keamanan.'],
-      ['Penetration Tester', 'Menguji sistem secara etis untuk menemukan celah sebelum dimanfaatkan penyerang.'],
-      ['Network Engineer', 'Merancang dan merawat jaringan agar tetap terhubung, cepat, dan aman.']
-    ]
-  },
-  io: {
-    name: 'Embedded Systems & Internet of Things',
-    short: 'Embedded & IoT',
-    color: '#2fd39a',
-    p1: '#9af0cb',
-    p2: '#10a37f',
-    tagline: 'Menghidupkan perangkat elektronik lewat sensor, mikrokontroler, dan program.',
-    desc: 'Bidang ini memadukan elektronika dan pemrograman untuk membuat perangkat yang dapat merasakan lingkungan, mengambil keputusan, dan terhubung ke jaringan.',
-    comps: [
-      'Pemrograman mikrokontroler (C/C++)',
-      'Dasar rangkaian elektronik dan sensor',
-      'Protokol komunikasi seperti I2C, SPI, dan MQTT',
-      'Debugging perangkat keras dan perangkat lunak sekaligus'
-    ],
-    advice: [
-      'Mulai proyek kecil dengan Arduino atau ESP32, misalnya monitor suhu ruangan.',
-      'Pelajari cara mengirim data sensor ke cloud atau dashboard.',
-      'Dokumentasikan skema rangkaian dan kode supaya proyekmu bisa direproduksi.'
-    ],
-    roles: [
-      ['Embedded Engineer', 'Menulis program yang berjalan langsung di dalam perangkat elektronik.'],
-      ['IoT Developer', 'Menghubungkan sensor dan perangkat ke jaringan serta platform data.'],
-      ['Firmware / Hardware Engineer', 'Merancang dan menguji perangkat keras serta firmware pendukungnya.']
-    ]
-  },
-  en: {
-    name: 'Enterprise System & IT Governance',
-    short: 'Enterprise & IT Gov',
-    color: '#ffb524',
-    p1: '#ffdc82',
-    p2: '#ff9a1f',
-    tagline: 'Menyelaraskan teknologi dengan proses bisnis, tata kelola, dan kepatuhan organisasi.',
-    desc: 'Bidang ini berfokus pada pemahaman proses kerja organisasi, perancangan sistem informasi pendukungnya, serta memastikan penggunaan teknologi dan data tetap aman, efisien, dan sesuai aturan.',
-    comps: [
-      'Analisis proses bisnis dan kebutuhan sistem',
-      'Pemahaman ERP dan integrasi antar sistem',
-      'Kerangka tata kelola dan audit TI (misalnya COBIT, ISO 27001)',
-      'Komunikasi dan pengelolaan pemangku kepentingan'
-    ],
-    advice: [
-      'Pelajari pemodelan proses bisnis (BPMN) dan dasar-dasar ERP.',
-      'Kenali kerangka tata kelola TI dan coba studi kasus audit sederhana.',
-      'Latih presentasi dan penulisan dokumen kebutuhan yang rapi.'
-    ],
-    roles: [
-      ['Business / System Analyst', 'Menerjemahkan kebutuhan bisnis menjadi spesifikasi sistem yang jelas.'],
-      ['IT Auditor', 'Menilai apakah pengelolaan sistem dan data sudah aman serta sesuai aturan.'],
-      ['IT Consultant', 'Membantu organisasi memilih dan menerapkan solusi teknologi yang tepat.']
+      ['UX Researcher', 'Menggali kebutuhan dan perilaku pengguna lewat riset.'],
+      ['Product Designer', 'Merancang pengalaman produk dari ide sampai tampilan akhir.']
     ]
   }
 };
@@ -266,18 +391,23 @@ const CAREERS = {
    Ganti isi computeResult() dengan panggilan ke backend / model ML nantinya.
    --------------------------------------------------------------------- */
 const FIELD_ITEMS = {
-  ds: ['Q9', 'Q10', 'Q11', 'Q12', 'Q13', 'Q5', 'Q28'],
-  se: ['Q14', 'Q15', 'Q29', 'Q28'],
-  ux: ['Q16', 'Q17', 'Q18', 'Q6', 'Q8'],
+  ds: ['Q9', 'Q10', 'Q5', 'Q28', 'Q12'],
+  ai: ['Q12', 'Q13', 'Q28', 'Q29'],
+  da: ['Q9', 'Q10', 'Q11', 'Q30'],
   cy: ['Q19', 'Q20', 'Q21', 'Q7'],
-  io: ['Q22', 'Q23', 'Q24', 'Q25', 'Q21'],
-  en: ['Q26', 'Q27', 'Q3', 'Q30', 'Q2']
+  io: ['Q22', 'Q23', 'Q21', 'Q31'],
+  em: ['Q23', 'Q24', 'Q15', 'Q7'],
+  ch: ['Q25', 'Q23', 'Q7', 'Q28'],
+  se: ['Q14', 'Q15', 'Q29', 'Q28'],
+  en: ['Q26', 'Q3', 'Q30', 'Q2'],
+  au: ['Q27', 'Q7', 'Q3', 'Q20'],
+  ux: ['Q16', 'Q17', 'Q18', 'Q6', 'Q8']
 };
 
 const PRODI_BIAS = {
-  'Informatika': { ds: 0.2, se: 0.2 },
-  'Sistem Informasi': { en: 0.25, ux: 0.15 },
-  'Teknik Komputer': { io: 0.25, cy: 0.15 }
+  'Informatika': { ds: 0.2, ai: 0.2, se: 0.2 },
+  'Sistem Informasi': { en: 0.2, da: 0.15, au: 0.15, ux: 0.15 },
+  'Teknik Komputer': { io: 0.2, em: 0.2, ch: 0.2, cy: 0.15 }
 };
 
 function computeResult(answers) {
@@ -287,7 +417,7 @@ function computeResult(answers) {
     const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
     return { key: k, s: avg + (bias[k] || 0) };
   });
-  const exps = scores.map((x) => Math.exp(0.8 * x.s));
+  const exps = scores.map((x) => Math.exp(1.2 * x.s));
   const sum = exps.reduce((a, b) => a + b, 0);
   const ranked = scores
     .map((x, i) => ({ key: x.key, pct: +((exps[i] / sum) * 100).toFixed(1) }))
@@ -363,20 +493,30 @@ function Wave() {
 const CHAR_MAIN = {
   guide: '#ffc23d',
   ds: '#8b6bff',
-  se: '#38bdf8',
-  ux: '#ff7a59',
+  ai: '#e056c8',
+  da: '#84cc16',
   cy: '#5b54e8',
   io: '#2fd39a',
-  en: '#ffb524'
+  em: '#14b8a6',
+  ch: '#64748b',
+  se: '#38bdf8',
+  en: '#ffb524',
+  au: '#ef4444',
+  ux: '#ff7a59'
 };
 const CHAR_NAME = {
   guide: 'Kiko, maskot panduan',
-  ds: 'Maskot Data Science dan AI',
-  se: 'Maskot Software Engineering',
-  ux: 'Maskot UI/UX Design',
-  cy: 'Maskot Cyber Security',
-  io: 'Maskot Embedded dan IoT',
-  en: 'Maskot Enterprise System'
+  ds: 'Maskot Data Scientist',
+  ai: 'Maskot AI dan Machine Learning',
+  da: 'Maskot Data Analyst',
+  cy: 'Maskot Cybersecurity',
+  io: 'Maskot IoT',
+  em: 'Maskot Embedded Systems',
+  ch: 'Maskot Chip Design',
+  se: 'Maskot Application Developer',
+  en: 'Maskot ERP Analyst',
+  au: 'Maskot IT Auditor',
+  ux: 'Maskot UI/UX Designer'
 };
 
 function characterSVGString(key) {
@@ -449,6 +589,51 @@ function characterSVGString(key) {
         <rect x="70" y="150" width="60" height="42" rx="7" fill="${INK}"/><rect x="79" y="158" width="42" height="26" rx="4" fill="#ffd23f"/>
         <text x="100" y="177" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="14" fill="${INK}">IoT</text>
         <g fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round"><path d="M160 94 Q176 84 188 96"/><path d="M164 108 Q174 100 182 110"/></g><circle cx="172" cy="122" r="3.5" fill="#fff"/>`;
+      break;
+    case 'ai':
+      accessories = `
+        <g stroke="${INK}" stroke-width="3" stroke-linecap="round"><path d="M70 36 L100 24 L130 36 M100 24 V50"/></g>
+        <circle cx="70" cy="36" r="7" fill="#ffd23f" stroke="${INK}" stroke-width="3"/><circle cx="100" cy="24" r="8" fill="#fff" stroke="${INK}" stroke-width="3"/><circle cx="130" cy="36" r="7" fill="#ffd23f" stroke="${INK}" stroke-width="3"/>
+        <g stroke="${INK}" stroke-width="2.5"><path d="M82 160 L118 152 M82 160 L118 172 M82 182 L118 172 M82 182 L118 192 M82 160 L118 192"/></g>
+        <g fill="#fff" stroke="${INK}" stroke-width="3"><circle cx="82" cy="160" r="6"/><circle cx="82" cy="182" r="6"/><circle cx="118" cy="152" r="6"/><circle cx="118" cy="172" r="6"/><circle cx="118" cy="192" r="6"/></g>
+        <path d="M24 70 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z" fill="#fff" opacity=".9"/>`;
+      break;
+    case 'da':
+      accessories = `
+        <path d="M52 62 Q100 38 148 62" fill="none" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>
+        <rect x="60" y="146" width="72" height="48" rx="8" fill="#fff" stroke="${INK}" stroke-width="3"/>
+        <rect x="60" y="146" width="72" height="12" rx="6" fill="#5fa00b" stroke="${INK}" stroke-width="3"/>
+        <g stroke="#c9cfe8" stroke-width="2.5"><path d="M60 170 H132 M60 182 H132 M84 158 V194 M108 158 V194"/></g>
+        <circle cx="152" cy="142" r="17" fill="rgba(255,255,255,.55)" stroke="${INK}" stroke-width="4"/>
+        <path d="M164 154 L180 172" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>
+        <g transform="translate(30 70)"><circle r="14" fill="#ffd23f" stroke="${INK}" stroke-width="3"/><path d="M0 0 V-14 A14 14 0 0 1 13 4Z" fill="#ff6b57" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/></g>`;
+      break;
+    case 'em':
+      accessories = `
+        <path d="M100 54 V34" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="100" cy="28" r="8" fill="#ff5470" stroke="${INK}" stroke-width="3"/><path d="M86 18 l-5 -5 M114 18 l5 -5" stroke="#ff5470" stroke-width="3.5" stroke-linecap="round"/>
+        <rect x="58" y="146" width="76" height="48" rx="7" fill="#0b6b60" stroke="${INK}" stroke-width="3"/>
+        <path d="M66 160 H84 V172 M126 158 H108 V176 M66 184 H92 M126 186 H112" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".8"/>
+        <rect x="82" y="158" width="28" height="22" rx="3" fill="${INK}"/><text x="96" y="173" text-anchor="middle" font-family="monospace" font-weight="700" font-size="10" fill="#8ff0e1">MCU</text>
+        <g transform="rotate(30 158 140)"><rect x="152" y="104" width="13" height="50" rx="4" fill="#ffd23f" stroke="${INK}" stroke-width="3"/><rect x="154" y="152" width="9" height="22" rx="2" fill="#c9cfe8" stroke="${INK}" stroke-width="3"/></g>`;
+      break;
+    case 'ch':
+      accessories = `
+        <g fill="#a5f3fc" fill-opacity=".4" stroke="${INK}" stroke-width="3.5"><circle cx="79" cy="110" r="20"/><circle cx="121" cy="110" r="20"/></g>
+        <path d="M99 108 H101" stroke="${INK}" stroke-width="4"/><path d="M44 106 Q40 110 44 118 M156 106 Q160 110 156 118" stroke="${INK}" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <g stroke="#e8c15a" stroke-width="4" stroke-linecap="round"><path d="M72 146v-7M86 146v-7M100 146v-7M114 146v-7M128 146v-7M72 194v7M86 194v7M100 194v7M114 194v7M128 194v7M60 158h-7M60 170h-7M60 182h-7M140 158h7M140 170h7M140 182h7"/></g>
+        <rect x="60" y="146" width="80" height="48" rx="6" fill="#2a3342" stroke="${INK}" stroke-width="3"/>
+        <rect x="72" y="154" width="56" height="32" rx="3" fill="#aab6c8"/>
+        <g stroke="#2a3342" stroke-width="2"><path d="M86 154 V186 M100 154 V186 M114 154 V186 M72 165 H128 M72 175 H128"/></g>
+        <text x="22" y="64" font-family="monospace" font-weight="700" font-size="14" fill="#fff" opacity=".85">1010</text>`;
+      break;
+    case 'au':
+      accessories = `
+        <path d="M48 88 Q100 48 152 88 L152 98 Q100 66 48 98Z" fill="#1f8a4c" fill-opacity=".85" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+        <g transform="rotate(-6 88 168)"><rect x="58" y="142" width="60" height="52" rx="6" fill="#fff" stroke="${INK}" stroke-width="3"/><rect x="58" y="142" width="10" height="52" rx="4" fill="#b91c1c" stroke="${INK}" stroke-width="3"/>
+          <path d="M76 156 H110 M76 166 H110 M76 176 H98" stroke="#c9cfe8" stroke-width="3" stroke-linecap="round"/><circle cx="104" cy="182" r="8" fill="none" stroke="#12b886" stroke-width="3"/><path d="M100 182 l3 3 5-6" stroke="#12b886" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+        <circle cx="150" cy="150" r="17" fill="rgba(255,255,255,.55)" stroke="${INK}" stroke-width="4"/><path d="M162 162 L178 180" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>
+        <path d="M163 40 l-12 6 v10 q0 10 12 16 q12 -6 12 -16 V46Z" fill="#fff" stroke="${INK}" stroke-width="3" stroke-linejoin="round" opacity=".9"/>`;
       break;
     case 'en':
       accessories = `
@@ -731,7 +916,7 @@ function App() {
                   <span className="brand__logo">
                     <Icon name="compass" size={22} />
                   </span>
-                  <span>CareerPath ML</span>
+                  <span>CareerPath</span>
                 </div>
               </div>
               <div className="welcome__stage">
@@ -782,7 +967,7 @@ function App() {
               >
                 Mulai Petualangan <Icon name="fwd" size={20} />
               </button>
-              <h2 className="sec-title">Kenalan sama 6 bidangnya</h2>
+              <h2 className="sec-title">11 bidang karir</h2>
               <div className="carousel">
                 {CAREER_ORDER.map((k) => (
                   <div
@@ -875,7 +1060,6 @@ function App() {
                   data-code="Q1"
                 >
                   <div className="qhead">
-                    <span className="qbadge">1</span>
                     <p className="qtext">Apa program studi kamu?</p>
                     <span
                       className={`qstate ${
@@ -972,7 +1156,6 @@ function App() {
                     </div>
 
                     {g.questions.map((q) => {
-                      const num = FLOW.findIndex((f) => f.code === q.code) + 1;
                       const ans = isAnswered(q.code);
                       const err = Boolean(errors[q.code]) && !ans;
                       const val = answers[q.code];
@@ -987,7 +1170,6 @@ function App() {
                           data-code={q.code}
                         >
                           <div className="qhead">
-                            <span className="qbadge">{num}</span>
                             <p className="qtext">{q.question}</p>
                             <span
                               className={`qstate ${ans ? 'ok' : err ? 'bad' : ''}`}
