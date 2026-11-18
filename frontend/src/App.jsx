@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
+// Konfigurasi URL API Backend Flask
+const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000';
+
 /* =====================================================================
    DATA — kode pertanyaan Q1–Q31 sesuai Tabel_Pertanyaan_Karir_Draft_ML.docx
    Payload `answers` tetap kompatibel dengan backend / model ML nantinya.
@@ -720,6 +723,8 @@ function App() {
   const [coinPop, setCoinPop] = useState(false);
   const [bubbleBump, setBubbleBump] = useState(false);
   const [loadingIdx, setLoadingIdx] = useState(0);
+  const [apiError, setApiError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const toastTimerRef = useRef(null);
   const prevDoneRef = useRef(0);
@@ -761,22 +766,13 @@ function App() {
     }
   }, [bubbleMsg, view]);
 
-  // Efek layar loading sebelum masuk ke hasil
+  // Efek animasi teks pesan saat layar loading aktif
   useEffect(() => {
     if (view !== 'loading') return;
     setLoadingIdx(0);
-    const msgsCount = 3;
-    let idx = 0;
     const iv = setInterval(() => {
-      idx += 1;
-      if (idx < msgsCount) {
-        setLoadingIdx(idx);
-      } else {
-        clearInterval(iv);
-        setView('result');
-        window.scrollTo({ top: 0 });
-      }
-    }, 900);
+      setLoadingIdx((prev) => (prev + 1) % loadingMessages.length);
+    }, 800);
     return () => clearInterval(iv);
   }, [view]);
 
@@ -845,7 +841,7 @@ function App() {
     }
   };
 
-  const handleSubmitForm = () => {
+  const handleSubmitForm = async () => {
     const un = FLOW.filter((q) => !isAnswered(q.code));
     if (un.length > 0) {
       const nextErr = {};
@@ -857,17 +853,88 @@ function App() {
       scrollToCard(un[0].code, step);
       return;
     }
-    const computed = computeResult(answers);
-    setResult(computed);
-    setViewKey(computed.ranked[0].key);
+
+    // Persiapan payload data jawaban Q1 - Q31 untuk endpoint backend /predict
+    const payload = {
+      Q1: answers.Q1,
+      ...Object.fromEntries(
+        Array.from({ length: 30 }, (_, i) => [
+          `Q${i + 2}`,
+          Number(answers[`Q${i + 2}`])
+        ])
+      )
+    };
+
+    setIsSubmitting(true);
+    setApiError(null);
     setView('loading');
     window.scrollTo({ top: 0 });
+
+    try {
+      const response = await fetch(`${API_URL}/predict`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || `Server merespons kode status ${response.status}`);
+      }
+
+      // Format peringkat karir dari respons model Machine Learning
+      const ranked = (data.probabilities || []).map((item) => ({
+        key: item.key,
+        career_field: item.career_field,
+        pct: item.percentage
+      }));
+
+      // Ringkasan skor per kelompok kategori pertanyaan (untuk ringcards)
+      const groups = QUESTION_GROUPS.map((g) => {
+        const vals = g.questions.map((q) => answers[q.code]);
+        const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+        const pct = Math.round(((avg - 1) / 4) * 100);
+        return { g, avg, pct };
+      });
+
+      const topKey = data.prediction_key || (ranked[0] ? ranked[0].key : 'ds');
+
+      setResult({
+        ranked,
+        groups,
+        prediction: data.prediction,
+        prediction_key: topKey,
+        probabilities: data.probabilities,
+        input: data.input
+      });
+      setViewKey(topKey);
+
+      // Transisi halus ke layar hasil setelah animasi loading
+      setTimeout(() => {
+        setView('result');
+        window.scrollTo({ top: 0 });
+        setIsSubmitting(false);
+      }, 1200);
+
+    } catch (err) {
+      console.error('Prediction API Error:', err);
+      setIsSubmitting(false);
+      setView('form');
+      const errorMsg = err.message || 'Gagal terhubung ke server backend (port 5000).';
+      showToast(errorMsg);
+      setApiError(errorMsg);
+    }
   };
 
   const handleRetake = () => {
     setAnswers({});
     setErrors({});
     setResult(null);
+    setApiError(null);
+    setIsSubmitting(false);
     setStep(0);
     setView('welcome');
     window.scrollTo({ top: 0 });
@@ -1286,13 +1353,21 @@ function App() {
                   <p className="jar__hint">
                     Setiap bulatan = satu jawaban. Ketuk untuk lompat ke pertanyaannya.
                   </p>
+                  {apiError && (
+                    <div style={{ background: '#fee2e2', border: '1px solid #f87171', borderRadius: '16px', padding: '12px 16px', color: '#991b1b', fontSize: '.85rem', fontWeight: 600, marginTop: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Icon name="info" size={18} />
+                      <span>{apiError}</span>
+                    </div>
+                  )}
                   <div className="stack" style={{ marginTop: 16 }}>
                     <button
                       type="button"
                       className="btn btn--primary btn--lg"
                       onClick={handleSubmitForm}
+                      disabled={isSubmitting}
                     >
-                      Lihat Hasil Analisis <Icon name="fwd" size={20} />
+                      {isSubmitting ? 'Memproses Prediksi ML...' : 'Lihat Hasil Analisis'}{' '}
+                      <Icon name="fwd" size={20} />
                     </button>
                     {doneCount > 0 && (
                       <button
@@ -1400,10 +1475,10 @@ function App() {
                   </div>
                 </div>
 
-                <div className="simnote">
-                  <Icon name="info" size={18} />
+                <div className="simnote" style={{ background: '#eef4ff', borderColor: '#cddafe', color: '#1e3a8a' }}>
+                  <Icon name="check" size={18} />
                   <span>
-                    <strong>Mode simulasi.</strong> Persentase dihitung dengan aturan sederhana di browser sebagai pratinjau desain. Belum terhubung ke backend maupun model Machine Learning final.
+                    <strong>Prediksi Model Machine Learning.</strong> Rekomendasi bidang karir dihitung langsung oleh model klasifikasi Support Vector Machine (SVM) terlatih berdasarkan jawaban kuesionermu.
                   </span>
                 </div>
 
@@ -1483,6 +1558,42 @@ function App() {
                       <p>{d}</p>
                     </div>
                   ))}
+                </div>
+
+                <h2 className="sec-title">Peringkat kesesuaian karir lainnya</h2>
+                <div className="carousel">
+                  {ranked.map((r, idx) => {
+                    const k = r.key;
+                    if (!CAREERS[k]) return null;
+                    const isSelected = viewKey === k;
+                    return (
+                      <div
+                        key={k}
+                        className={`mini ${isSelected ? 'is-hot' : ''}`}
+                        style={{ '--p1': CAREERS[k].p1, '--p2': CAREERS[k].p2 }}
+                        onClick={() => {
+                          setViewKey(k);
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                      >
+                        <div className="mini__art">
+                          <Character charKey={k} />
+                        </div>
+                        <b>{CAREERS[k].short}</b>
+                        <small
+                          style={{
+                            display: 'block',
+                            fontSize: '.75rem',
+                            fontWeight: 700,
+                            color: isSelected ? '#fff' : '#4b5563',
+                            marginTop: '4px'
+                          }}
+                        >
+                          #{idx + 1} · {r.pct}%
+                        </small>
+                      </div>
+                    );
+                  })}
                 </div>
 
                 <div className="actions">
