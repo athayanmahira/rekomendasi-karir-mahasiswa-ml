@@ -274,6 +274,12 @@ def predict():
                     })
 
                 probabilities.sort(key=lambda x: x["percentage"], reverse=True)
+
+                # Pastikan prediksi utama selalu selaras dengan peringkat #1 persentase tertinggi
+                # sesuai implementasi fungsi rekomendasi() pada notebook ML.ipynb Cell 43
+                if probabilities:
+                    prediction_name = probabilities[0]["career_field"]
+                    prediction_key = probabilities[0]["key"]
             except Exception as e_proba:
                 print(f"[WARN] Gagal menghitung distribusi probabilitas: {e_proba}")
 

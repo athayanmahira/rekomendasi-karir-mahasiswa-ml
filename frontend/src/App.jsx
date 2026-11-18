@@ -900,7 +900,8 @@ function App() {
         return { g, avg, pct };
       });
 
-      const topKey = data.prediction_key || (ranked[0] ? ranked[0].key : 'ds');
+      // Selalu gunakan peringkat #1 (persentase tertinggi) sebagai tampilan awal hasil
+      const topKey = (ranked.length > 0 ? ranked[0].key : data.prediction_key) || 'ds';
 
       setResult({
         ranked,
