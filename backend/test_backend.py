@@ -95,6 +95,17 @@ def test_invalid_scale():
     assert 'rentang skala 1 hingga 5' in data['error']
     print("Invalid scale test passed:", data['error'])
 
+def test_invalid_bool():
+    dummy = {'Q1': 'Informatika'}
+    for i in range(2, 32):
+        dummy[f'Q{i}'] = 3
+    dummy['Q5'] = True
+    res = client.post('/predict', json=dummy)
+    assert res.status_code == 400
+    data = res.get_json()
+    assert 'tidak valid' in data['error']
+    print("Invalid bool test passed:", data['error'])
+
 def test_text_scales():
     dummy = {'Q1': 'Informatika'}
     for k in kol_sesuai:
@@ -114,6 +125,7 @@ if __name__ == '__main__':
     test_missing_question()
     test_invalid_prodi()
     test_invalid_scale()
+    test_invalid_bool()
     test_text_scales()
     print("\n>>> ALL BACKEND TESTS PASSED SUCCESSFULLY! <<<")
 

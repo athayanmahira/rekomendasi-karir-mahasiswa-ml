@@ -206,8 +206,8 @@ def predict():
             raw_val = data.get(code)
             parsed_val = None
 
-            # Penanganan jika input berupa angka langsung atau string angka (mendukung desimal titik/koma)
-            if isinstance(raw_val, (int, float)):
+            # Penanganan jika input berupa angka langsung (kecuali boolean) atau string angka (mendukung desimal titik/koma)
+            if isinstance(raw_val, (int, float)) and not isinstance(raw_val, bool):
                 parsed_val = float(raw_val)
             elif isinstance(raw_val, str):
                 cleaned_str = raw_val.strip().replace(',', '.')
@@ -265,15 +265,22 @@ def predict():
             try:
                 proba_arr = career_model.predict_proba(input_data)[0]
 
+                raw_probs = []
                 for idx, p in enumerate(proba_arr):
                     cls_name = career_classes[idx] if career_classes and idx < len(career_classes) else f"Kelas {idx}"
-                    probabilities.append({
-                        "career_field": str(cls_name),
-                        "key": CAREER_KEY_MAP.get(str(cls_name), ''),
-                        "percentage": round(float(p) * 100, 1)
-                    })
+                    raw_probs.append((float(p), str(cls_name)))
 
-                probabilities.sort(key=lambda x: x["percentage"], reverse=True)
+                # Urutkan berdasarkan probabilitas mentah sebelum pembulatan agar tie-break akurat
+                raw_probs.sort(key=lambda item: item[0], reverse=True)
+
+                probabilities = [
+                    {
+                        "career_field": cls_name,
+                        "key": CAREER_KEY_MAP.get(cls_name, ''),
+                        "percentage": round(raw_p * 100, 1)
+                    }
+                    for raw_p, cls_name in raw_probs
+                ]
 
                 # Pastikan prediksi utama selalu selaras dengan peringkat #1 persentase tertinggi
                 # sesuai implementasi fungsi rekomendasi() pada notebook ML.ipynb Cell 43

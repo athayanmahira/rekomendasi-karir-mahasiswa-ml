@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './App.css';
 
 // Konfigurasi URL API Backend Flask
@@ -6,7 +6,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000';
 
 /* =====================================================================
    DATA — kode pertanyaan Q1–Q31 sesuai Tabel_Pertanyaan_Karir_Draft_ML.docx
-   Payload `answers` tetap kompatibel dengan backend / model ML nantinya.
+   Payload `answers` dikirim ke backend Flask (/predict) untuk diprediksi model ML.
    ===================================================================== */
 const PRODI_OPTIONS = [
   { value: 'Informatika', icon: 'code', color: '#3d63ff', desc: 'Fokus pada perangkat lunak, algoritma, dan kecerdasan buatan.' },
@@ -118,24 +118,8 @@ const CAREERS = {
     color: '#8b6bff',
     p1: '#b6a2ff',
     p2: '#6d4df2',
-    tagline: 'Menyuka data, mencari pola, berpikir analitis, dan memahami informasi dari angka.',
-    desc: 'Data Scientist menggali data dalam jumlah besar untuk menemukan pola, membangun model statistik, dan mengubah temuan menjadi wawasan yang membantu pengambilan keputusan.',
-    comps: [
-      'Statistik, probabilitas, dan analisis kuantitatif',
-      'Pemrograman analitis (Python, R, SQL)',
-      'Eksplorasi data dan pengenalan pola',
-      'Menyampaikan temuan data secara jelas kepada pemangku kepentingan'
-    ],
-    advice: [
-      'Perdalam statistik, probabilitas, dan Python atau SQL.',
-      'Kerjakan proyek dataset nyata dari eksplorasi sampai evaluasi.',
-      'Latih menjelaskan hasil analisis dengan bahasa sederhana.'
-    ],
-    roles: [
-      ['Data Scientist', 'Menganalisis data kompleks dan membangun model untuk menjawab masalah organisasi.'],
-      ['Research Analyst', 'Meneliti tren dan pola dari data untuk mendukung strategi.'],
-      ['Quantitative Analyst', 'Menggunakan model matematis dan statistik untuk menilai peluang dan risiko.']
-    ]
+    tagline: 'Menyukai data, mencari pola, berpikir analitis, dan memahami informasi dari angka.',
+    desc: 'Data Scientist menggali data dalam jumlah besar untuk menemukan pola, membangun model statistik, dan mengubah temuan menjadi wawasan yang membantu pengambilan keputusan.'
   },
   ai: {
     name: 'AI / Machine Learning Engineer',
@@ -144,23 +128,7 @@ const CAREERS = {
     p1: '#f5a3e6',
     p2: '#b92fa0',
     tagline: 'Membuat program yang belajar dari data, mencoba pendekatan berbeda, dan memecahkan masalah.',
-    desc: 'AI/Machine Learning Engineer merancang, melatih, dan menyempurnakan model yang dapat belajar dari contoh data, lalu memasangnya agar bisa dipakai di aplikasi nyata.',
-    comps: [
-      'Dasar machine learning dan deep learning',
-      'Pemrograman Python dan framework seperti PyTorch atau TensorFlow',
-      'Menyiapkan data dan mengevaluasi model',
-      'Bereksperimen dengan banyak pendekatan sampai hasil lebih tepat'
-    ],
-    advice: [
-      'Kuasai Python, aljabar linear, dan dasar machine learning.',
-      'Ulangi eksperimen model dan catat hasil tiap percobaan.',
-      'Pelajari cara men-deploy model menjadi layanan sederhana.'
-    ],
-    roles: [
-      ['Machine Learning Engineer', 'Melatih dan mengoptimalkan model prediktif untuk produk digital.'],
-      ['AI Engineer', 'Mengintegrasikan model cerdas ke dalam aplikasi dan layanan.'],
-      ['NLP / Computer Vision Engineer', 'Mengembangkan sistem yang memahami teks atau gambar.']
-    ]
+    desc: 'AI/Machine Learning Engineer merancang, melatih, dan menyempurnakan model yang dapat belajar dari contoh data, lalu memasangnya agar bisa dipakai di aplikasi nyata.'
   },
   da: {
     name: 'Data Analyst',
@@ -169,23 +137,7 @@ const CAREERS = {
     p1: '#d4f08a',
     p2: '#5fa00b',
     tagline: 'Menyukai pengolahan data, pencarian informasi, dan penggunaan hasil analisis untuk menjawab pertanyaan.',
-    desc: 'Data Analyst mengolah dan membersihkan data, mencari informasi penting di dalamnya, lalu menyajikannya dalam grafik dan laporan agar mudah dipahami dan dipakai mengambil keputusan.',
-    comps: [
-      'SQL, spreadsheet, dan pengolahan data',
-      'Visualisasi data dan dashboard',
-      'Membersihkan dan menyusun data',
-      'Menjelaskan hasil analisis kepada orang lain'
-    ],
-    advice: [
-      'Biasakan SQL dan alat dashboard seperti Power BI atau Looker Studio.',
-      'Buat portofolio dashboard dari dataset publik.',
-      'Latih bercerita dengan data, bukan hanya menampilkan angka.'
-    ],
-    roles: [
-      ['Data Analyst', 'Mengolah data dan menjawab pertanyaan bisnis lewat analisis.'],
-      ['Business Intelligence Analyst', 'Membangun dashboard yang membantu pimpinan memantau kinerja.'],
-      ['Reporting Specialist', 'Menyusun laporan berkala yang akurat dan mudah dibaca.']
-    ]
+    desc: 'Data Analyst mengolah dan membersihkan data, mencari informasi penting di dalamnya, lalu menyajikannya dalam grafik dan laporan agar mudah dipahami dan dipakai mengambil keputusan.'
   },
   cy: {
     name: 'Cybersecurity Analyst',
@@ -194,23 +146,7 @@ const CAREERS = {
     p1: '#9d99ff',
     p2: '#3b34b8',
     tagline: 'Menemukan kelemahan sistem dan melindungi informasi dari ancaman digital.',
-    desc: 'Cybersecurity Analyst memantau dan menguji sistem untuk menemukan kelemahan, lalu memperkuat perlindungan akun, data, dan jaringan dari serangan digital.',
-    comps: [
-      'Dasar jaringan: TCP/IP, routing, dan firewall',
-      'Identifikasi kerentanan dan penetration testing secara etis',
-      'Monitoring, analisis log, dan respons insiden',
-      'Pemahaman enkripsi dan manajemen hak akses'
-    ],
-    advice: [
-      'Pelajari dasar jaringan dan Linux, lalu berlatih di lab atau CTF yang legal.',
-      'Pertimbangkan sertifikasi dasar seperti CompTIA Security+ atau CCNA.',
-      'Biasakan menulis laporan temuan yang jelas dan rapi.'
-    ],
-    roles: [
-      ['Security Analyst', 'Memantau ancaman, menganalisis log, dan menindaklanjuti insiden keamanan.'],
-      ['Penetration Tester', 'Menguji sistem secara etis untuk menemukan celah sebelum dimanfaatkan penyerang.'],
-      ['Network Security Engineer', 'Mengamankan dan menjaga stabilitas infrastruktur jaringan.']
-    ]
+    desc: 'Cybersecurity Analyst memantau dan menguji sistem untuk menemukan kelemahan, lalu memperkuat perlindungan akun, data, dan jaringan dari serangan digital.'
   },
   io: {
     name: 'IoT Developer / Engineer',
@@ -219,23 +155,7 @@ const CAREERS = {
     p1: '#9af0cb',
     p2: '#10a37f',
     tagline: 'Tertarik pada sensor, perangkat elektronik, dan menggabungkan komponen dengan program.',
-    desc: 'IoT Developer/Engineer menghubungkan sensor dan perangkat elektronik ke jaringan, lalu menulis program agar data dapat dibaca, dikirim, dan dimanfaatkan.',
-    comps: [
-      'Pemrograman mikrokontroler dan perangkat berbasis sensor',
-      'Dasar rangkaian elektronik',
-      'Protokol komunikasi seperti MQTT, I2C, dan SPI',
-      'Mengirim data perangkat ke cloud atau dashboard'
-    ],
-    advice: [
-      'Mulai proyek kecil dengan Arduino atau ESP32, misalnya monitor suhu ruangan.',
-      'Pelajari cara mengirim data sensor ke cloud atau dashboard.',
-      'Dokumentasikan skema rangkaian dan kode supaya proyekmu bisa ditiru.'
-    ],
-    roles: [
-      ['IoT Developer', 'Menghubungkan sensor dan perangkat ke jaringan serta platform data.'],
-      ['IoT Solutions Engineer', 'Merancang solusi perangkat terhubung untuk kebutuhan nyata.'],
-      ['Smart Device Engineer', 'Mengembangkan perangkat pintar untuk rumah, industri, atau pertanian.']
-    ]
+    desc: 'IoT Developer/Engineer menghubungkan sensor dan perangkat elektronik ke jaringan, lalu menulis program agar data dapat dibaca, dikirim, dan dimanfaatkan.'
   },
   em: {
     name: 'Embedded Systems Engineer',
@@ -244,23 +164,7 @@ const CAREERS = {
     p1: '#8ff0e1',
     p2: '#0b8f82',
     tagline: 'Tertarik memahami komponen elektronik dan membuat program yang mengendalikan fungsi perangkat elektronik.',
-    desc: 'Embedded Systems Engineer menulis program yang berjalan langsung di dalam perangkat elektronik dan memastikan perangkat keras serta perangkat lunaknya bekerja sama dengan andal.',
-    comps: [
-      'Pemrograman C/C++ untuk mikrokontroler',
-      'Dasar rangkaian dan komponen elektronik',
-      'Debugging perangkat keras dan perangkat lunak',
-      'Ketelitian dalam membaca datasheet'
-    ],
-    advice: [
-      'Perdalam C/C++ dan arsitektur mikrokontroler.',
-      'Bangun proyek yang mengendalikan motor, sensor, atau layar.',
-      'Biasakan membaca datasheet dan skema rangkaian.'
-    ],
-    roles: [
-      ['Embedded Engineer', 'Menulis program yang berjalan langsung di dalam perangkat elektronik.'],
-      ['Firmware Engineer', 'Mengembangkan dan memperbarui perangkat lunak tingkat rendah pada perangkat.'],
-      ['Hardware Test Engineer', 'Menguji agar perangkat bekerja sesuai fungsinya.']
-    ]
+    desc: 'Embedded Systems Engineer menulis program yang berjalan langsung di dalam perangkat elektronik dan memastikan perangkat keras serta perangkat lunaknya bekerja sama dengan andal.'
   },
   ch: {
     name: 'Chip Design Engineer',
@@ -269,23 +173,7 @@ const CAREERS = {
     p1: '#aab6c8',
     p2: '#3a4658',
     tagline: 'Tertarik memahami komponen elektronik, rangkaian digital, dan cara kerja chip.',
-    desc: 'Chip Design Engineer merancang rangkaian digital yang menjadi otak perangkat, mulai dari logika dasar, simulasi, hingga verifikasi agar chip bekerja benar.',
-    comps: [
-      'Logika digital dan arsitektur komputer',
-      'Bahasa deskripsi perangkat keras seperti Verilog atau VHDL',
-      'Simulasi dan verifikasi rancangan',
-      'Ketelitian tinggi pada detail rangkaian'
-    ],
-    advice: [
-      'Kuasai logika digital dan arsitektur komputer.',
-      'Coba Verilog atau VHDL dengan simulator dan FPGA sederhana.',
-      'Latih ketelitian lewat proyek verifikasi kecil.'
-    ],
-    roles: [
-      ['Digital Design Engineer', 'Merancang rangkaian digital dengan bahasa deskripsi perangkat keras.'],
-      ['Verification Engineer', 'Menguji rancangan chip lewat simulasi sebelum diproduksi.'],
-      ['FPGA Engineer', 'Mengimplementasikan rancangan pada perangkat FPGA.']
-    ]
+    desc: 'Chip Design Engineer merancang rangkaian digital yang menjadi otak perangkat, mulai dari logika dasar, simulasi, hingga verifikasi agar chip bekerja benar.'
   },
   se: {
     name: 'Application Developer',
@@ -294,23 +182,7 @@ const CAREERS = {
     p1: '#9be0ff',
     p2: '#2f8fe8',
     tagline: 'Tertarik membuat aplikasi, menulis program, dan memperbaiki kesalahan.',
-    desc: 'Application Developer membuat aplikasi mulai dari analisis kebutuhan, penulisan kode, pengujian, hingga pemeliharaan agar aplikasi berjalan andal dan mudah dikembangkan.',
-    comps: [
-      'Pemrograman serta struktur data dan algoritma',
-      'Perancangan arsitektur aplikasi dan basis data',
-      'Debugging, pengujian, dan penjaminan kualitas',
-      'Kolaborasi tim dengan version control dan praktik agile'
-    ],
-    advice: [
-      'Dalami satu bahasa pemrograman sampai nyaman, lalu pelajari framework web atau mobile.',
-      'Bangun dan publikasikan proyek aplikasi lengkap di GitHub beserta dokumentasinya.',
-      'Ikut kerja tim atau open source untuk melatih kolaborasi.'
-    ],
-    roles: [
-      ['Frontend / Backend Developer', 'Membangun tampilan dan logika sisi server untuk aplikasi web yang cepat dan stabil.'],
-      ['Mobile App Developer', 'Mengembangkan aplikasi Android atau iOS yang nyaman dipakai.'],
-      ['Software Tester / QA', 'Menguji aplikasi agar bebas kesalahan sebelum dirilis.']
-    ]
+    desc: 'Application Developer membuat aplikasi mulai dari analisis kebutuhan, penulisan kode, pengujian, hingga pemeliharaan agar aplikasi berjalan andal dan mudah dikembangkan.'
   },
   en: {
     name: 'ERP Analyst / Consultant',
@@ -319,23 +191,7 @@ const CAREERS = {
     p1: '#ffdc82',
     p2: '#ff9a1f',
     tagline: 'Tertarik memahami kebutuhan bisnis dan mencari cara agar sistem membantu pekerjaan perusahaan.',
-    desc: 'ERP Analyst/Consultant memahami proses kerja perusahaan, lalu menyesuaikan dan mengimplementasikan sistem terintegrasi agar pekerjaan lebih efisien.',
-    comps: [
-      'Analisis proses bisnis dan kebutuhan sistem',
-      'Pemahaman ERP dan integrasi antar sistem',
-      'Komunikasi dan pengelolaan pemangku kepentingan',
-      'Mengatur tugas dan jadwal implementasi'
-    ],
-    advice: [
-      'Pelajari pemodelan proses bisnis (BPMN) dan dasar-dasar ERP.',
-      'Coba studi kasus implementasi sistem seperti Odoo atau SAP.',
-      'Latih presentasi dan penulisan dokumen kebutuhan yang rapi.'
-    ],
-    roles: [
-      ['ERP Analyst', 'Menerjemahkan kebutuhan bisnis menjadi konfigurasi sistem ERP.'],
-      ['Business / System Analyst', 'Menyusun spesifikasi sistem yang jelas bagi tim pengembang.'],
-      ['IT Consultant', 'Mendampingi organisasi memilih dan menerapkan solusi teknologi.']
-    ]
+    desc: 'ERP Analyst/Consultant memahami proses kerja perusahaan, lalu menyesuaikan dan mengimplementasikan sistem terintegrasi agar pekerjaan lebih efisien.'
   },
   au: {
     name: 'IT Auditor',
@@ -344,23 +200,7 @@ const CAREERS = {
     p1: '#fca5a5',
     p2: '#b91c1c',
     tagline: 'Teliti, tertarik pada keamanan dan risiko, serta memeriksa apakah sistem digunakan sesuai aturan.',
-    desc: 'IT Auditor memeriksa apakah sistem komputer dan pengelolaan data sudah aman, andal, dan sesuai aturan, lalu menyusun temuan serta rekomendasi perbaikan.',
-    comps: [
-      'Kerangka tata kelola dan audit TI (COBIT, ISO 27001)',
-      'Penilaian risiko dan pengendalian internal',
-      'Ketelitian dalam memeriksa bukti dan dokumen',
-      'Menulis laporan temuan yang jelas'
-    ],
-    advice: [
-      'Kenali COBIT dan ISO 27001 lewat studi kasus audit sederhana.',
-      'Latih ketelitian memeriksa dokumen dan bukti.',
-      'Asah penulisan laporan temuan dan rekomendasi.'
-    ],
-    roles: [
-      ['IT Auditor', 'Menilai apakah pengelolaan sistem dan data sudah aman serta sesuai aturan.'],
-      ['Risk & Compliance Analyst', 'Mengidentifikasi risiko teknologi dan memastikan kepatuhan.'],
-      ['IT Governance Specialist', 'Menyelaraskan penggunaan teknologi dengan kebijakan organisasi.']
-    ]
+    desc: 'IT Auditor memeriksa apakah sistem komputer dan pengelolaan data sudah aman, andal, dan sesuai aturan, lalu menyusun temuan serta rekomendasi perbaikan.'
   },
   ux: {
     name: 'UI/UX Designer',
@@ -369,69 +209,9 @@ const CAREERS = {
     p1: '#ffc0aa',
     p2: '#ff6b57',
     tagline: 'Kreatif, tertarik memahami kebutuhan pengguna, merancang tampilan, dan menguji kemudahan penggunaan.',
-    desc: 'UI/UX Designer memahami kebutuhan pengguna, merancang alur dan tampilan, membuat prototipe, lalu menguji apakah rancangan mudah dipahami dan nyaman digunakan.',
-    comps: [
-      'Riset pengguna: wawancara, survei, dan usability testing',
-      'Perancangan wireframe, prototipe, dan design system',
-      'Penerapan visual, warna, dan tipografi yang konsisten',
-      'Komunikasi ide desain kepada developer dan tim'
-    ],
-    advice: [
-      'Pelajari Figma dan prinsip dasar UX seperti hierarki visual dan aksesibilitas.',
-      'Susun studi kasus yang menunjukkan masalah, proses, dan hasil.',
-      'Uji desainmu ke beberapa orang dan catat masukannya.'
-    ],
-    roles: [
-      ['UI Designer', 'Merancang antarmuka yang rapi, konsisten, dan enak dilihat di berbagai ukuran layar.'],
-      ['UX Researcher', 'Menggali kebutuhan dan perilaku pengguna lewat riset.'],
-      ['Product Designer', 'Merancang pengalaman produk dari ide sampai tampilan akhir.']
-    ]
+    desc: 'UI/UX Designer memahami kebutuhan pengguna, merancang alur dan tampilan, membuat prototipe, lalu menguji apakah rancangan mudah dipahami dan nyaman digunakan.'
   }
 };
-
-/* ---------------------------------------------------------------------
-   MOCK SCORING — hanya pratinjau antarmuka.
-   Ganti isi computeResult() dengan panggilan ke backend / model ML nantinya.
-   --------------------------------------------------------------------- */
-const FIELD_ITEMS = {
-  ds: ['Q9', 'Q10', 'Q5', 'Q28', 'Q12'],
-  ai: ['Q12', 'Q13', 'Q28', 'Q29'],
-  da: ['Q9', 'Q10', 'Q11', 'Q30'],
-  cy: ['Q19', 'Q20', 'Q21', 'Q7'],
-  io: ['Q22', 'Q23', 'Q21', 'Q31'],
-  em: ['Q23', 'Q24', 'Q15', 'Q7'],
-  ch: ['Q25', 'Q23', 'Q7', 'Q28'],
-  se: ['Q14', 'Q15', 'Q29', 'Q28'],
-  en: ['Q26', 'Q3', 'Q30', 'Q2'],
-  au: ['Q27', 'Q7', 'Q3', 'Q20'],
-  ux: ['Q16', 'Q17', 'Q18', 'Q6', 'Q8']
-};
-
-const PRODI_BIAS = {
-  'Informatika': { ds: 0.2, ai: 0.2, se: 0.2 },
-  'Sistem Informasi': { en: 0.2, da: 0.15, au: 0.15, ux: 0.15 },
-  'Teknik Komputer': { io: 0.2, em: 0.2, ch: 0.2, cy: 0.15 }
-};
-
-function computeResult(answers) {
-  const bias = PRODI_BIAS[answers.Q1] || {};
-  const scores = CAREER_ORDER.map((k) => {
-    const vals = FIELD_ITEMS[k].map((c) => answers[c] || 3);
-    const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
-    return { key: k, s: avg + (bias[k] || 0) };
-  });
-  const exps = scores.map((x) => Math.exp(1.2 * x.s));
-  const sum = exps.reduce((a, b) => a + b, 0);
-  const ranked = scores
-    .map((x, i) => ({ key: x.key, pct: +((exps[i] / sum) * 100).toFixed(1) }))
-    .sort((a, b) => b.pct - a.pct);
-  const groups = QUESTION_GROUPS.map((g) => {
-    const vals = g.questions.map((q) => answers[q.code]);
-    const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
-    return { g, avg, pct: Math.round((avg / 5) * 100) };
-  });
-  return { ranked, groups };
-}
 
 /* =====================================================================
    UTIL & SVG HELPERS
@@ -704,6 +484,43 @@ function MarbleFace({ value }) {
   );
 }
 
+function BackendStatusNotice({ status, onRetry }) {
+  if (status !== 'offline' && status !== 'model_missing') return null;
+  const isModelMissing = status === 'model_missing';
+  return (
+    <div
+      className="simnote"
+      role="status"
+      style={{ justifyContent: 'space-between', alignItems: 'center', gap: '12px' }}
+    >
+      <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+        <Icon name="info" size={18} />
+        <span>
+          {isModelMissing
+            ? 'Server backend aktif, tetapi model ML (model_karir.pkl) belum dimuat di server.'
+            : 'Server backend Flask belum terdeteksi (port 5000). Nyalakan backend sebelum mengirim jawaban.'}
+        </span>
+      </div>
+      <button
+        type="button"
+        onClick={onRetry}
+        style={{
+          flex: 'none',
+          padding: '6px 12px',
+          borderRadius: '10px',
+          background: '#fff',
+          border: '1.5px solid #e5b84b',
+          fontWeight: 800,
+          fontSize: '.74rem',
+          color: '#7a5200'
+        }}
+      >
+        Cek Ulang
+      </button>
+    </div>
+  );
+}
+
 function stepOf(code) {
   if (code === 'Q1') return 0;
   if (code === 'submit') return QUESTION_GROUPS.length;
@@ -725,6 +542,7 @@ function App() {
   const [loadingIdx, setLoadingIdx] = useState(0);
   const [apiError, setApiError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [backendStatus, setBackendStatus] = useState('checking');
 
   const toastTimerRef = useRef(null);
   const prevDoneRef = useRef(0);
@@ -776,14 +594,41 @@ function App() {
     return () => clearInterval(iv);
   }, [view]);
 
-  const showToast = (msg) => {
+  const showToast = useCallback((msg) => {
     setToastMsg(msg);
     setToastVisible(true);
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
     toastTimerRef.current = setTimeout(() => {
       setToastVisible(false);
     }, 2400);
-  };
+  }, []);
+
+  const checkBackendHealth = useCallback(async (manual = false, signal) => {
+    if (manual) setBackendStatus('checking');
+    try {
+      const res = await fetch(`${API_URL}/`, { signal });
+      if (!res.ok) throw new Error(`Status ${res.status}`);
+      const info = await res.json();
+      if (info.status === 'online' && info.model_loaded) {
+        setBackendStatus('online');
+        setApiError(null);
+        if (manual) showToast('Server backend & model ML siap!');
+      } else {
+        setBackendStatus('model_missing');
+        if (manual) showToast('Server aktif, tetapi model ML belum dimuat.');
+      }
+    } catch (err) {
+      if (err?.name === 'AbortError') return;
+      setBackendStatus('offline');
+      if (manual) showToast('Server backend masih belum aktif.');
+    }
+  }, [showToast]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    checkBackendHealth(false, controller.signal);
+    return () => controller.abort();
+  }, [checkBackendHealth]);
 
   const scrollToCard = (code, currentStep = step) => {
     const targetStep = stepOf(code);
@@ -882,8 +727,11 @@ function App() {
       const data = await response.json();
 
       if (!response.ok || !data.success) {
+        if (response.status === 503) setBackendStatus('model_missing');
         throw new Error(data.error || `Server merespons kode status ${response.status}`);
       }
+
+      setBackendStatus('online');
 
       // Format peringkat karir dari respons model Machine Learning
       const ranked = (data.probabilities || []).map((item) => ({
@@ -922,6 +770,7 @@ function App() {
 
     } catch (err) {
       console.error('Prediction API Error:', err);
+      if (err instanceof TypeError) setBackendStatus('offline');
       setIsSubmitting(false);
       setView('form');
       const errorMsg = err.message || 'Gagal terhubung ke server backend (port 5000).';
@@ -1035,6 +884,10 @@ function App() {
               >
                 Mulai Petualangan <Icon name="fwd" size={20} />
               </button>
+              <BackendStatusNotice
+                status={backendStatus}
+                onRetry={() => checkBackendHealth(true)}
+              />
               <h2 className="sec-title">11 bidang karir</h2>
               <div className="carousel">
                 {CAREER_ORDER.map((k) => (
@@ -1354,6 +1207,12 @@ function App() {
                   <p className="jar__hint">
                     Setiap bulatan = satu jawaban. Ketuk untuk lompat ke pertanyaannya.
                   </p>
+                  {!apiError && (
+                    <BackendStatusNotice
+                      status={backendStatus}
+                      onRetry={() => checkBackendHealth(true)}
+                    />
+                  )}
                   {apiError && (
                     <div style={{ background: '#fee2e2', border: '1px solid #f87171', borderRadius: '16px', padding: '12px 16px', color: '#991b1b', fontSize: '.85rem', fontWeight: 600, marginTop: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <Icon name="info" size={18} />
@@ -1470,30 +1329,14 @@ function App() {
                     </span>
                   </div>
                   <h2 className="cname">{C.name}</h2>
-                  <div className="desc" style={{ '--tint': tint }}>
-                    <b>Tentang bidang ini</b>
-                    {C.desc}
-                  </div>
-                </div>
-
-                <div className="simnote" style={{ background: '#eef4ff', borderColor: '#cddafe', color: '#1e3a8a' }}>
-                  <Icon name="check" size={18} />
-                  <span>
-                    <strong>Prediksi Model Machine Learning.</strong> Rekomendasi bidang karir dihitung langsung oleh model klasifikasi Support Vector Machine (SVM) terlatih berdasarkan jawaban kuesionermu.
-                  </span>
                 </div>
 
                 <div className="grid2">
                   <div className="box" style={{ '--c': C.color }}>
-                    <h3>Kompetensi kunci</h3>
-                    {C.comps.map((t, idx) => (
-                      <div key={idx} className="check">
-                        <b>
-                          <Icon name="check" size={14} />
-                        </b>
-                        <span>{t}</span>
-                      </div>
-                    ))}
+                    <h3>Tentang bidang ini</h3>
+                    <div className="desccard">
+                      <p>{C.desc}</p>
+                    </div>
                   </div>
                   <div className="box">
                     <h3>Ringkasan jawabanmu</h3>
@@ -1535,30 +1378,6 @@ function App() {
                       );
                     })}
                   </div>
-                </div>
-
-                <h2 className="sec-title">Saran pengembangan diri</h2>
-                <div className="row3">
-                  {C.advice.map((t, i) => (
-                    <div
-                      key={i}
-                      className="step"
-                      style={{ '--c': C.color, '--tint': tint }}
-                    >
-                      <i>{i + 1}</i>
-                      <p>{t}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <h2 className="sec-title">Peran profesi terkait</h2>
-                <div className="row3">
-                  {C.roles.map(([t, d]) => (
-                    <div key={t} className="role" style={{ '--c': C.color }}>
-                      <b>{t}</b>
-                      <p>{d}</p>
-                    </div>
-                  ))}
                 </div>
 
                 <h2 className="sec-title">Peringkat kesesuaian karir lainnya</h2>
